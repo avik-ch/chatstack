@@ -75,6 +75,7 @@ A comprehensive instant messaging backend built with Node.js, Express, Socket.IO
 | POST | `/login` | Login user | No |
 | GET | `/profile` | Get current user profile | Yes |
 | PUT | `/profile` | Update user profile | Yes |
+| PUT | `/change-password` | Change user password | Yes |
 | POST | `/logout` | Logout user | Yes |
 
 ### Users (`/api/users`)
@@ -145,7 +146,8 @@ A comprehensive instant messaging backend built with Node.js, Express, Socket.IO
 - `id`: Unique identifier
 - `email`: Email address (unique)
 - `username`: Username (unique)
-- `password`: Hashed password
+- `password`: Hashed password with per-user salt
+- `salt`: Unique salt for password hashing
 - `firstName`, `lastName`: User names
 - `avatar`: Profile picture URL
 - `bio`: User bio
@@ -225,8 +227,31 @@ curl -X POST http://localhost:8080/api/messages/groups/GROUP_ID \
   }'
 ```
 
+### Change password
+```bash
+curl -X PUT http://localhost:8080/api/auth/change-password \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "currentPassword": "oldpassword123",
+    "newPassword": "newpassword456"
+  }'
+```
 
 
+
+
+## Security Features
+
+- **JWT token authentication** with configurable expiration
+- **Per-user salt password hashing** with bcrypt (prevents rainbow table attacks)
+- **Unique salt generation** using crypto.randomBytes for each user
+- **CORS configuration** with origin restrictions
+- **Input validation and sanitization**
+- **File upload restrictions** (image types, size limits)
+- **SQL injection prevention** (Prisma ORM)
+- **Rate limiting** (can be added)
+- **Environment variable protection** for sensitive data
 
 ## Production Deployment
 
