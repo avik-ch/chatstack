@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  
+  groupMembers     GroupMember[]
+  
+  sentFriendships     Friendship[] @relation("FriendshipRequester")
+  receivedFriendships Friendship[] @relation("FriendshipAddressee")
+
+  @@map("users")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  authorId  String
+  author    User     @relation("SentMessages", fields: [authorId], references: [id], onDelete: Cascade)
+  groupId   String?
+  group     Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade)  
+  recipientId String?
+  recipient   User?    @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model Group {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  members     GroupMember[]
+  messages    Message[]
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String @id @default(cuid())
+  userId   String
+  groupId  String
+  role     GroupRole @default(MEMBER)
+  joinedAt DateTime  @default(now())
+  user     User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group    Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, groupId])
+  @@map("group_members")
+}
+
+model Friendship {
+  id          String          @id @default(cuid())
+  requesterId String
+  addresseeId String
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  requester   User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee   User @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+  
+  @@unique([requesterId, addresseeId])
+  @@map("friendships")
+}
+
+enum GroupRole {
+  ADMIN
+  MEMBER
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
