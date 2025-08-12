@@ -313,7 +313,7 @@
   position: relative;
   word-wrap: break-word;
   line-height: 1.5;
-  color: #3a72e1;
+  color: #ffffff;
 }
 
 .message.own .message-content {
@@ -784,7 +784,7 @@
 }
 
 .message-content {
-  background: #f8f9fa;
+  background: #727374;
   padding: 0.75rem 1rem;
   border-radius: 1rem;
   position: relative;
