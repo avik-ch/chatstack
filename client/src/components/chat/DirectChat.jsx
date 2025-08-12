@@ -38,6 +38,18 @@ const DirectChat = () => {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    if (partner) {
+      document.title = `${partner.firstName} ${partner.lastName} - ChatStack`;
+    } else {
+      document.title = 'ChatStack';
+    }
+    
+    return () => {
+      document.title = 'ChatStack';
+    };
+  }, [partner]);
+
   const fetchChatData = async () => {
     try {
       setLoading(true);

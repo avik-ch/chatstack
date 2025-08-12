@@ -49,6 +49,18 @@ const GroupChat = () => {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    if (group) {
+      document.title = `${group.name} - ChatStack`;
+    } else {
+      document.title = 'ChatStack';
+    }
+    
+    return () => {
+      document.title = 'ChatStack';
+    };
+  }, [group]);
+
   const fetchChatData = useCallback(async () => {
     try {
       setLoading(true);
