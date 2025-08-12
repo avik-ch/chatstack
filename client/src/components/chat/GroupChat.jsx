@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
@@ -49,7 +49,7 @@ const GroupChat = () => {
     scrollToBottom();
   }, [messages]);
 
-  const fetchChatData = async () => {
+  const fetchChatData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -67,21 +67,19 @@ const GroupChat = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [groupId]);
 
-  const handleNewMessage = (message) => {
-    // Only add message if it's for this group
+  const handleNewMessage = useCallback((message) => {
     if (message.groupId === groupId) {
       setMessages(prev => [...prev, message]);
     }
-  };
+  }, [groupId]);
 
-  const handleMessageSent = (message) => {
-    // Add the sent message to the chat if it's for this group
+  const handleMessageSent = useCallback((message) => {
     if (message.groupId === groupId) {
       setMessages(prev => [...prev, message]);
     }
-  };
+  }, [groupId]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -184,8 +182,7 @@ const GroupChat = () => {
               <div className="chat-details">
                 <h1 className="chat-title">{group.name}</h1>
                 <p className="chat-subtitle">
-                  {group.members?.length || 0} member{group.members?.length !== 1 ? 's' : ''}
-                  {group.description && ` • ${group.description}`}
+                  {group.description && `${group.description}`}
                 </p>
               </div>
             </div>

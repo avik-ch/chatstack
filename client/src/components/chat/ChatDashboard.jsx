@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
 import { messagesAPI, usersAPI } from '../../services/api';
 import Sidebar from './Sidebar';
@@ -14,7 +13,6 @@ const ChatDashboard = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [loading, setLoading] = useState(true);
   
-  const { user } = useAuth();
   const { socket } = useSocket();
 
   useEffect(() => {

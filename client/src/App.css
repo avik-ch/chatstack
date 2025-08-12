@@ -6,7 +6,6 @@
 
 html, body {
   width: 100%;
-  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -56,4 +55,30 @@ html, body {
   border-radius: 6px;
   border-left: 4px solid #ef4444;
   margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .loading-container {
+    padding: 0 1rem;
+  }
+  
+  .loading-spinner {
+    font-size: 1rem;
+  }
+  
+  .error-message {
+    margin: 0 1rem 1rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-spinner {
+    font-size: 0.9rem;
+  }
+  
+  .error-message {
+    margin: 0 0.5rem 1rem 0.5rem;
+    padding: 0.5rem;
+  }
 }

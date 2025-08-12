@@ -89,7 +89,7 @@ const Dashboard = () => {
             <Link to="/profile" className="nav-link">Profile</Link>
           </nav>
           <div className="user-menu">
-            <span className="welcome-text">Welcome, {user.firstName || user.username}!</span>
+            {/* <span className="welcome-text">Welcome, {user.firstName || user.username}!</span> */}
             <button onClick={logout} className="logout-btn">Sign Out</button>
           </div>
         </div>
@@ -97,7 +97,6 @@ const Dashboard = () => {
 
       <main className="dashboard-main">
         <div className="dashboard-content">
-          {/* Recent Conversations */}
           <section className="dashboard-section">
             <div className="section-header">
               <h2>Recent Conversations</h2>
@@ -161,7 +160,6 @@ const Dashboard = () => {
             )}
           </section>
 
-          {/* Friend Requests */}
           {friendRequests.length > 0 && (
             <section className="dashboard-section">
               <div className="section-header">
@@ -193,7 +191,6 @@ const Dashboard = () => {
             </section>
           )}
 
-          {/* Quick Stats */}
           <section className="dashboard-section">
             <div className="section-header">
               <h2>Quick Stats</h2>

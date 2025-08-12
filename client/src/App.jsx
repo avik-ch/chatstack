@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-// Public Route Component (redirect to chat if already authenticated)
+// Public Route Component (redirect to dashboard if already authenticated)
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
   
@@ -39,7 +39,7 @@ const PublicRoute = ({ children }) => {
     );
   }
   
-  return !isAuthenticated ? children : <Navigate to="/chat" />;
+  return !isAuthenticated ? children : <Navigate to="/dashboard" />;
 };
 
 function App() {
