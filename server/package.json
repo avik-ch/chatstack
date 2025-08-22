@@ -12,7 +12,9 @@
     "start": "node app.js",
     "db:clear": "node scripts/clear-db.js",
     "db:seed": "node scripts/seed-db.js",
-    "db:reset": "node scripts/reset-db.js"
+    "db:reset": "node scripts/reset-db.js",
+    "db:setup": "node scripts/setup-production.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",

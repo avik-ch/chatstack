@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSocket } from '../../context/SocketContext';
+import { useSocket } from '../../hooks/useSocket';
 import { messagesAPI, usersAPI } from '../../services/api';
 import Sidebar from './Sidebar';
 import ChatWindow from './ChatWindow';
