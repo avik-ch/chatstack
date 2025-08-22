@@ -38,6 +38,8 @@ After running the seed script, you can log in with any of these accounts:
 | diana@example.com | password123 | Diana Design | diana_design |
 | eve@example.com | password123 | Eve Explorer | eve_explorer |
 
+**Note**: Each user account is created with a unique random salt for enhanced security. The passwords are hashed using bcrypt with the user's individual salt.
+
 ## Test Data Structure
 
 ### Groups Created:
@@ -53,6 +55,14 @@ After running the seed script, you can log in with any of these accounts:
 - Direct message conversations between various users
 - Group messages in each of the 3 groups
 - Random additional messages for realistic data volume
+
+## Security Features
+
+### Salt Implementation
+- Each user account is created with a unique random salt
+- Salt length varies between 16-64 characters for additional security
+- Passwords are hashed using bcrypt with the user's individual salt
+- This prevents rainbow table attacks and enhances overall security
 
 ## Usage Tips
 

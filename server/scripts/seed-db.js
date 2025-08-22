@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const prisma = new PrismaClient();
 
@@ -102,11 +103,17 @@ async function seedDatabase() {
     const createdUsers = [];
     
     for (const userData of testUsers) {
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
+      const saltLength = Math.floor(Math.random() * 49) + 16;
+      const salt = crypto.randomBytes(saltLength).toString('hex');
+      
+      // Hash password with the generated salt
+      const hashedPassword = await bcrypt.hash(userData.password + salt, 10);
+      
       const user = await prisma.user.create({
         data: {
           ...userData,
-          password: hashedPassword
+          password: hashedPassword,
+          salt
         }
       });
       createdUsers.push(user);

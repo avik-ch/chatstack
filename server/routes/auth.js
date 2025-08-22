@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { PrismaClient } = require('@prisma/client');
 const { authenticateToken } = require('../middleware/auth');
 
@@ -26,8 +27,12 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'User with this email or username already exists' });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Generate a random salt of random length (between 16 and 64 characters)
+    const saltLength = Math.floor(Math.random() * 49) + 16; // Random length between 16-64
+    const salt = crypto.randomBytes(saltLength).toString('hex');
+    
+    // Hash password with the generated salt
+    const hashedPassword = await bcrypt.hash(password + salt, 10);
 
     // Create user
     const user = await prisma.user.create({
@@ -35,6 +40,7 @@ router.post('/register', async (req, res) => {
         email,
         username,
         password: hashedPassword,
+        salt,
         firstName,
         lastName
       },
@@ -80,8 +86,8 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Check password
-    const validPassword = await bcrypt.compare(password, user.password);
+    // Check password using the stored salt
+    const validPassword = await bcrypt.compare(password + user.salt, user.password);
     if (!validPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
