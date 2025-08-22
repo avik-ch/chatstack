@@ -19,34 +19,24 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
       "https://chatstack-*.vercel.app"
     ];
 
-// Debug CORS configuration
-console.log('Allowed origins:', allowedOrigins);
-console.log('NODE_ENV:', process.env.NODE_ENV);
-
 // More permissive CORS for development and testing
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log('CORS request from origin:', origin);
-    
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) {
-      console.log('No origin, allowing request');
       return callback(null, true);
     }
     
     // Allow all Vercel domains for now (you can make this more restrictive later)
     if (origin.includes('vercel.app')) {
-      console.log('Vercel domain allowed:', origin);
       return callback(null, true);
     }
     
     // Check specific allowed origins
     if (allowedOrigins.indexOf(origin) !== -1) {
-      console.log('Origin allowed:', origin);
       return callback(null, true);
     }
     
-    console.log('Origin blocked:', origin);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
@@ -98,13 +88,10 @@ app.use('/api/groups', groupRoutes);
 const connectedUsers = new Map(); // userId -> socketId
 
 io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
-
   // User joins with their ID
   socket.on('join', (userId) => {
     connectedUsers.set(userId, socket.id);
     socket.userId = userId;
-    console.log(`User ${userId} joined with socket ${socket.id}`);
   });
 
   // Handle direct message
@@ -203,18 +190,15 @@ io.on('connection', (socket) => {
 
   socket.on('join_group', (groupId) => {
     socket.join(`group_${groupId}`);
-    console.log(`User ${socket.userId} joined group ${groupId}`);
   });
 
   socket.on('leave_group', (groupId) => {
     socket.leave(`group_${groupId}`);
-    console.log(`User ${socket.userId} left group ${groupId}`);
   });
 
   socket.on('disconnect', () => {
     if (socket.userId) {
       connectedUsers.delete(socket.userId);
-      console.log(`User ${socket.userId} disconnected`);
     }
   });
 });
