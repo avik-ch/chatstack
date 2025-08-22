@@ -1,6 +1,17 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+// Fallback to production URLs if environment variables are not working
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (window.location.hostname.includes('vercel.app') 
+    ? 'https://chatstack-aviks-projects-f1605f5d.vercel.app/api'
+    : 'http://localhost:8080/api');
+
+// Debug logging
+console.log('API_BASE_URL:', API_BASE_URL);
+console.log('Environment variables:', {
+  VITE_API_URL: import.meta.env.VITE_API_URL,
+  VITE_SOCKET_URL: import.meta.env.VITE_SOCKET_URL
+});
 
 const api = axios.create({
   baseURL: API_BASE_URL,

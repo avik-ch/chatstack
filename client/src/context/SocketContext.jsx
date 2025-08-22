@@ -13,7 +13,10 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:8080';
+      const socketUrl = import.meta.env.VITE_SOCKET_URL || 
+        (window.location.hostname.includes('vercel.app')
+          ? 'https://chatstack-aviks-projects-f1605f5d.vercel.app'
+          : 'http://localhost:8080');
       const newSocket = io(socketUrl);
       
       newSocket.on('connect', () => {
