@@ -571,9 +571,12 @@
 .conversation-preview {
   font-size: 0.875rem;
   color: #b5bbcb;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
 }
 
 .conversation-time {
@@ -1399,5 +1402,34 @@
   .modal-content {
     width: 98%;
     margin: 0.5rem;
+  }
+  
+  .conversation-preview {
+    -webkit-line-clamp: 1;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .conversation-preview {
+    font-size: 0.75rem;
+  }
+  
+  .chat-title {
+    font-size: 0.9rem;
+  }
+  
+  .chat-subtitle {
+    font-size: 0.7rem;
+  }
+  
+  .message-content {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .message-input {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
   }
 }
