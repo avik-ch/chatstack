@@ -8,6 +8,7 @@ const { PrismaClient } = require("@prisma/client");
 const app = express();
 const prisma = new PrismaClient();
 
+// CORS configuration for production
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',')
   : [
@@ -18,18 +19,30 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
       "https://chatstack-*.vercel.app"
     ];
 
+// Debug CORS configuration
+console.log('Allowed origins:', allowedOrigins);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+
 app.use(cors({
   origin: function (origin, callback) {
+    console.log('CORS request from origin:', origin);
+    
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('No origin, allowing request');
+      return callback(null, true);
+    }
     
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('Origin allowed:', origin);
       callback(null, true);
     } else {
       // Check if origin matches Vercel preview URLs pattern
       if (origin.includes('vercel.app')) {
+        console.log('Vercel domain allowed:', origin);
         callback(null, true);
       } else {
+        console.log('Origin blocked:', origin);
         callback(new Error('Not allowed by CORS'));
       }
     }
